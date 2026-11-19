@@ -55,6 +55,13 @@ export function ActionBarButton({
         onActivate?.(event.currentTarget);
     };
 
+    // Stop the click reaching the tile root, which treats clicks anywhere on a
+    // preview tile as a request to open the thread/notification in place.
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
+        event.stopPropagation();
+        onActivate?.(event.currentTarget);
+    };
+
     return (
         <Tooltip description={tooltipDescription ?? label} caption={tooltipCaption} placement="top">
             <Button
@@ -67,7 +74,7 @@ export function ActionBarButton({
                 aria-pressed={ariaPressed}
                 aria-expanded={ariaExpanded}
                 disabled={disabled}
-                onClick={(event) => onActivate?.(event.currentTarget)}
+                onClick={handleClick}
                 onContextMenu={handleContextMenu}
                 onFocus={disabled ? undefined : onFocus}
                 className={styles.toolbar_item}

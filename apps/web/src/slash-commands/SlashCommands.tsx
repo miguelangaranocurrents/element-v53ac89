@@ -22,6 +22,7 @@ import {
 import { logger } from "matrix-js-sdk/src/logger";
 import { KnownMembership, type RoomMemberEventContent } from "matrix-js-sdk/src/types";
 import { LinkedText } from "@element-hq/web-shared-components";
+import escapeHtml from "escape-html";
 
 import dis from "../dispatcher/dispatcher";
 import { _t, _td, UserFriendlyError } from "../languageHandler";
@@ -73,7 +74,9 @@ export const Commands = [
         args: "<message>",
         description: _td("slash_command|spoiler"),
         runFn: function (cli, roomId, threadId, message = "") {
-            return successSync(ContentHelpers.makeHtmlMessage(message, `<span data-mx-spoiler>${message}</span>`));
+            // Serialize markdown so formatting such as **bold** survives inside the spoiler.
+            const html = htmlSerializeFromMdIfNeeded(message) ?? escapeHtml(message);
+            return successSync(ContentHelpers.makeHtmlMessage(message, `<span data-mx-spoiler>${html}</span>`));
         },
         category: CommandCategories.messages,
     }),

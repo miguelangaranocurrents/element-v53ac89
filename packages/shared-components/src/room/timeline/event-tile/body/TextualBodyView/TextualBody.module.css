@@ -41,6 +41,13 @@
     display: flex;
 }
 
+/* The body can contain content that cannot shrink on its own (e.g. a wide code
+   block). Let it shrink below its min-content size so the surrounding text
+   still wraps within the tile instead of overflowing it. */
+.annotated > :first-child {
+    min-width: 0;
+}
+
 .annotatedInline {
     display: inline-flex;
 }

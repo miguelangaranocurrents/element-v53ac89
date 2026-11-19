@@ -89,10 +89,13 @@ export function EditMessageComposerWrapper(props: IEditMessageComposerProps): JS
         />
     );
 
+    // No wrapper element: the body slot styles its direct children with
+    // `overflow-y: hidden`, which would clip the autocomplete panel and the
+    // formatting bar that have to extend above the composer.
     return (
-        <div>
+        <>
             <MessageComposerUrlPreviewWrapper urlPreviewVm={vm} />
             {editor}
-        </div>
+        </>
     );
 }
